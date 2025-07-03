@@ -1,0 +1,205 @@
+<!-- archivo: venta.html -->
+<!DOCTYPE html>
+<html lang="es">
+<head>
+    <meta charset="UTF-8">
+    <meta name="viewport" content="width=device-width, initial-scale=1.0">
+    <title>Nueva Venta - Sistema de Ventas</title>
+    <link href="https://cdnjs.cloudflare.com/ajax/libs/bootstrap/5.3.0/css/bootstrap.min.css" rel="stylesheet">
+    <link href="https://cdnjs.cloudflare.com/ajax/libs/font-awesome/6.4.0/css/all.min.css" rel="stylesheet">
+    <link rel="stylesheet" href="/css/venta.css">
+    <script src="https://cdnjs.cloudflare.com/ajax/libs/jspdf/2.5.1/jspdf.umd.min.js"></script>
+    <script src="https://cdnjs.cloudflare.com/ajax/libs/html2canvas/1.4.1/html2canvas.min.js"></script>
+</head>
+<body>
+    <div class="container py-4">
+        <div class="row justify-content-center">
+            <div class="col-lg-10">
+                <div class="card">
+                    <div class="card-header">
+                        <div class="d-flex justify-content-between align-items-center">
+                            <h2 class="mb-0"><i class="fas fa-plus-circle"></i> Nueva Venta</h2>
+                            <a href="/" class="btn btn-light">
+                                <i class="fas fa-arrow-left"></i> Volver
+                            </a>
+                        </div>
+                    </div>
+                    <div class="card-body">
+                        <form id="ventaForm">
+                            <div class="mb-4">
+                                <label for="clienteSelect" class="form-label">
+                                    <i class="fas fa-user"></i> Seleccionar Cliente *
+                                </label>
+                                    <div class="row">
+                                        <div class="col-md-6">
+                                            <select class="form-select" id="clienteSelect" required>
+                                                <option value="">Cargando clientes...</option>
+                                            </select>
+                                        </div>
+                                        <div class="col-md-4">
+                                            <input type="text" class="form-control" id="buscarDNI" placeholder="Buscar por DNI">
+                                        </div>
+                                        <div class="col-md-2">
+                                            <a href="/nuevo-cliente" class="btn btn-outline-primary w-100">
+                                                <i class="fas fa-plus"></i> Nuevo
+                                            </a>
+                                        </div>
+                                    </div>
+
+                            </div>
+                            <div id="clienteInfo" class="client-info" style="display: none;">
+                                <h6><i class="fas fa-info-circle"></i> Información del Cliente</h6>
+                                <div id="clienteDetalles"></div>
+                            </div>
+                            <div class="mb-4">
+                                <label class="form-label">
+                                    <i class="fas fa-concierge-bell"></i> Seleccionar Servicios *
+                                </label>
+                                <div class="row" id="serviciosContainer"></div>
+                            </div>
+                            <div class="row">
+                                <div class="col-md-8">
+                                    <div class="card">
+                                        <div class="card-header">
+                                            <h5 class="mb-0"><i class="fas fa-list"></i> Resumen de Servicios</h5>
+                                        </div>
+                                        <div class="card-body">
+                                            <div id="resumenServicios">
+                                                <p class="text-muted text-center">No hay servicios seleccionados</p>
+                                            </div>
+                                        </div>
+                                    </div>
+                                </div>
+                                <div class="col-md-4">
+                                    <div class="total-display">
+                                        <h4><i class="fas fa-calculator"></i> Total</h4>
+                                        <h2 id="totalVenta">$0.00</h2>
+                                        <button type="submit" class="btn btn-light btn-lg mt-3 w-100" disabled>
+                                            <i class="fas fa-shopping-cart"></i> Procesar Venta
+                                        </button>
+                                    </div>
+                                </div>
+                            </div>
+                        </form>
+                    </div>
+                </div>
+            </div>
+        </div>
+    </div>
+
+    <div class="modal fade" id="confirmModal" tabindex="-1">
+        <div class="modal-dialog modal-lg">
+            <div class="modal-content">
+                <div class="modal-header">
+                    <!-- <div class="empresa-info">
+                        <h4 class="empresa-nombre">ECOSERVETAC</h4>
+                        <p class="empresa-descripcion">Empresa de Balnearios Eco Turístico de Aguas Calientes</p>
+                        <p class="empresa-servicios">Servicios: Piscinas Termales • Hospedaje • Restaurante • Tours Ecológicos</p>
+                    </div> -->
+                        <button type="button" class="btn-close" data-bs-dismiss="modal"></button>
+                </div>
+            <div class="modal-body">
+                <div class="boleta-container">
+                    <div class="boleta-header d-flex justify-content-between align-items-start flex-wrap">
+    <!-- Información de la empresa -->
+    <div class="empresa-info">
+        <h4 class="empresa-nombre">ECOSERVETAC</h4>
+        <p class="empresa-descripcion">Empresa de Balnearios Eco Turístico de Aguas Calientes</p>
+        <p class="empresa-servicios">Servicios: Piscinas Termales • Hospedaje • Restaurante • Tours Ecológicos</p>
+    </div>
+
+    <!-- Fecha y RUC alineados a la derecha -->
+    <div class="fecha-ruc text-end">
+        <div class="fecha-info mb-1">
+            <i class="fas fa-calendar-alt me-1 text-secondary"></i>
+            <span class="fecha-label fw-semibold">FECHA:</span>
+            <span class="fecha-valor" id="fechaActual">--/--/----</span>
+        </div>
+        <div class="ruc-info">
+            <i class="fas fa-id-card me-1 text-secondary"></i>
+            <span class="ruc-label fw-semibold">RUC:</span>
+            <span class="ruc-numero">20123456789</span>
+        </div>
+    </div>
+</div>
+
+                    
+                    
+                    <div class="separador-boleta"></div>
+                    
+                    <div class="modal-body">
+                        <div id="ventaBoleta">
+                            Aquí se insertará dinámicamente la boleta
+                        </div>
+                    </div>
+                    
+
+                    
+                    <div class="separador-boleta"></div>
+                    
+                    <div class="agradecimiento">
+                        <p class="mensaje-gracias">¡Gracias por elegirnos!</p>
+                        <p class="mensaje-visita">Esperamos verte pronto en nuestras instalaciones</p>
+                    </div>
+                </div>
+            </div>
+            <div class="modal-footer">
+                <!-- <button type="button" class="btn btn-secondary" data-bs-dismiss="modal">Cerrar</button>
+                <a href="/" class="btn btn-primary"> Imprimir</a> -->
+                <button type="button" class="btn btn-primary" onclick="descargarPDF()"> Descargar PDF</button>
+                <a href="/" class="btn btn-success"> Ir a Inicio</a>
+
+            </div>
+        </div>
+    </div>
+</div>
+
+<script>
+// Script para mostrar la fecha actual cuando se abre el modal
+document.addEventListener('DOMContentLoaded', function() {
+    const modal = document.getElementById('confirmModal');
+    if (modal) {
+        modal.addEventListener('show.bs.modal', function() {
+            const fechaElement = document.getElementById('fechaActual');
+            if (fechaElement) {
+                const now = new Date();
+                fechaElement.textContent = now.toLocaleDateString('es-PE');
+            }
+            
+            // Generar número de venta automático
+            const numeroVentaElement = document.getElementById('numeroVenta');
+            if (numeroVentaElement) {
+                const numeroVenta = Math.floor(Math.random() * 999999).toString().padStart(6, '0');
+                numeroVentaElement.textContent = numeroVenta;
+            }
+        });
+    }
+});
+</script>
+</script>
+
+    <script src="https://cdnjs.cloudflare.com/ajax/libs/bootstrap/5.3.0/js/bootstrap.bundle.min.js"></script>
+    <script src="/js/venta.js"></script>
+    <script>
+function descargarPDF() {
+    const elemento = document.querySelector('.boleta-container');
+    
+    html2canvas(elemento, {
+        scale: 2,
+        backgroundColor: '#ffffff'
+    }).then(canvas => {
+        const { jsPDF } = window.jspdf;
+        const pdf = new jsPDF('p', 'mm', 'a4');
+        const imgData = canvas.toDataURL('image/png');
+        
+        const pdfWidth = pdf.internal.pageSize.getWidth();
+        const imgWidth = pdfWidth - 20;
+        const imgHeight = (canvas.height * imgWidth) / canvas.width;
+        
+        pdf.addImage(imgData, 'PNG', 10, 10, imgWidth, imgHeight);
+        pdf.save('Boleta_ECOSERVETAC.pdf');
+    });
+}
+</script>
+</body>
+</html>

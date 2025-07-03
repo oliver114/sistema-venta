@@ -1,0 +1,377 @@
+<!DOCTYPE html>
+<html lang="es">
+<head>
+    <meta charset="UTF-8">
+    <meta name="viewport" content="width=device-width, initial-scale=1.0">
+    <title>Administración - Registro de Usuarios</title>
+    <link href="https://cdnjs.cloudflare.com/ajax/libs/bootstrap/5.3.2/css/bootstrap.min.css" rel="stylesheet">
+    <link href="https://cdnjs.cloudflare.com/ajax/libs/font-awesome/6.4.0/css/all.min.css" rel="stylesheet">
+    <link href="css/admin.css" rel="stylesheet">
+    <link href="css/admin-styles.css" rel="stylesheet">
+</head>
+<body>
+    <div class="admin-wrapper">
+        <!-- SIDEBAR -->
+        <nav class="admin-sidebar">
+            <div class="sidebar-header">
+                <div class="logo">
+                    <i class="fas fa-user-shield"></i>
+                    <span>AdminPanel</span>
+                </div>
+            </div>
+            
+            <div class="sidebar-menu">
+                <div class="menu-section">
+                    <h6 class="menu-title">Principal</h6>
+                    <ul class="menu-items">
+                        <li class="menu-item">
+                            <a href="#" class="menu-link active" onclick="cargarResumen()">
+                                <i class="fas fa-chart-bar"></i>
+                                <span>Resumen General</span>
+                            </a>
+                        </li>
+                        <li class="menu-item">
+                            <a href="#" class="menu-link" onclick="cargarUsuarios()">
+                                <i class="fas fa-users"></i>
+                                <span>Gestionar Usuarios</span>
+                            </a>
+                        </li>
+                        <li class="menu-item">
+                            <a href="#" class="menu-link" onclick="mostrarResumenTurnos()">
+                                <i class="fas fa-clock"></i>
+                                <span>Control de Turnos</span>
+                            </a>
+                        </li>
+                    </ul>
+                </div>
+                
+                <div class="menu-section">
+                    <h6 class="menu-title">Gestión</h6>
+                    <ul class="menu-items">
+                        <li class="menu-item">
+                            <a href="#" class="menu-link">
+                                <i class="fas fa-shopping-cart"></i>
+                                <span>Ventas</span>
+                            </a>
+                        </li>
+                        <li class="menu-item">
+                            <a href="reportes.html" class="menu-link">
+                                <i class="fas fa-chart-line"></i>
+                                <span>Reportes</span>
+                            </a>
+                        </li>
+                    </ul>
+                </div>
+            </div>
+            
+            <div class="sidebar-footer">
+                <button class="logout-btn" onclick="logout()">
+                    <i class="fas fa-sign-out-alt"></i>
+                    <span>Cerrar Sesión</span>
+                </button>
+            </div>
+        </nav>
+
+        <!-- MAIN CONTENT -->
+        <div class="admin-content">
+            <!-- HEADER -->
+            <header class="admin-header">
+                <div class="header-left">
+                    <button class="sidebar-toggle" onclick="toggleSidebar()">
+                        <i class="fas fa-bars"></i>
+                    </button>
+                    <h1 class="page-title">Panel de Administración</h1>
+                </div>
+                <div class="header-right">
+                    <div class="user-info">
+                        <div class="user-avatar">
+                            <i class="fas fa-user"></i>
+                        </div>
+                        <div class="user-details">
+                            <span class="user-name">Administrador</span>
+                            <span class="user-role">Admin</span>
+                        </div>
+                    </div>
+                </div>
+            </header>
+
+            <!-- CONTENT AREA -->
+            <main class="content-area">
+                <!-- ESTADÍSTICAS -->
+                <section class="stats-section" id="resumenStats" style="display: none;">
+                    <div class="stats-grid">
+                        <div class="stat-card primary">
+                            <div class="stat-icon">
+                                <i class="fas fa-shopping-cart"></i>
+                            </div>
+                            <div class="stat-content">
+                                <h3 id="totalVentas">0</h3>
+                                <p>Total Ventas</p>
+                            </div>
+                        </div>
+                        
+                        <div class="stat-card success">
+                            <div class="stat-icon">
+                                <i class="fas fa-users"></i>
+                            </div>
+                            <div class="stat-content">
+                                <h3 id="totalClientes">0</h3>
+                                <p>Total Clientes</p>
+                            </div>
+                        </div>
+                        
+                        <div class="stat-card warning">
+                            <div class="stat-icon">
+                                <i class="fas fa-dollar-sign"></i>
+                            </div>
+                            <div class="stat-content">
+                                <h3 id="ingresosTotales">$0</h3>
+                                <p>Ingresos Totales</p>
+                            </div>
+                        </div>
+                        
+                        <div class="stat-card info">
+                            <div class="stat-icon">
+                                <i class="fas fa-concierge-bell"></i>
+                            </div>
+                            <div class="stat-content">
+                                <h3 id="totalServicios">5</h3>
+                                <p>Servicios</p>
+                            </div>
+                        </div>
+                    </div>
+                </section>
+
+                <!-- REGISTRO DE USUARIOS -->
+                <section class="form-section">
+                    <div class="section-card">
+                        <div class="card-header">
+                            <h2 class="card-title">
+                                <i class="fas fa-user-plus"></i>
+                                Registro de Nuevos Usuarios
+                            </h2>
+                        </div>
+                        <div class="card-body">
+                            <div id="alertContainer"></div>
+                            
+                            <form id="registroForm" class="elegant-form">
+                                <div class="form-grid">
+                                    <div class="form-group">
+                                        <label for="nombre" class="form-label">
+                                            <i class="fas fa-user"></i>
+                                            Nombre Completo
+                                        </label>
+                                        <input type="text" class="form-control" id="nombre" name="nombre" required>
+                                    </div>
+                                    
+                                    <div class="form-group">
+                                        <label for="email" class="form-label">
+                                            <i class="fas fa-envelope"></i>
+                                            Correo Electrónico
+                                        </label>
+                                        <input type="email" class="form-control" id="email" name="email" required>
+                                    </div>
+                                    
+                                    <div class="form-group">
+                                        <label for="password" class="form-label">
+                                            <i class="fas fa-lock"></i>
+                                            Contraseña
+                                        </label>
+                                        <input type="password" class="form-control" id="password" name="password" required minlength="6">
+                                        <div class="form-text">La contraseña debe tener al menos 6 caracteres</div>
+                                    </div>
+                                    
+                                    <div class="form-group">
+                                        <label for="rol" class="form-label">
+                                            <i class="fas fa-user-tag"></i>
+                                            Rol del Usuario
+                                        </label>
+                                        <select class="form-select" id="rol" name="rol" required>
+                                            <option value="">Seleccionar rol...</option>
+                                            <option value="administrador">Administrador</option>
+                                            <option value="cajero">Cajero</option>
+                                        </select>
+                                    </div>
+                                </div>
+                                
+                                <div class="form-actions">
+                                    <button type="submit" class="btn btn-primary">
+                                        <span class="loading spinner-border spinner-border-sm" role="status" style="display:none;"></span>
+                                        <i class="fas fa-save"></i>
+                                        Registrar Usuario
+                                    </button>
+                                    <button type="reset" class="btn btn-secondary">
+                                        <i class="fas fa-undo"></i>
+                                        Limpiar
+                                    </button>
+                                </div>
+                            </form>
+                        </div>
+                    </div>
+                </section>
+
+                <!-- TABLAS -->
+                <section class="tables-section">
+                    <!-- USUARIOS REGISTRADOS -->
+                    <div class="section-card" id="usuariosCard" style="display: none;">
+                        <div class="card-header">
+                            <h2 class="card-title">
+                                <i class="fas fa-users"></i>
+                                Usuarios Registrados
+                            </h2>
+                        </div>
+                        <div class="card-body">
+                            <div class="table-responsive">
+                                <table class="table elegant-table">
+                                    <thead>
+                                        <tr>
+                                            <th>ID</th>
+                                            <th>Nombre</th>
+                                            <th>Email</th>
+                                            <th>Rol</th>
+                                            <th>Fecha Registro</th>
+                                            <th>Activo</th>
+                                        </tr>
+                                    </thead>
+                                    <tbody id="usuariosTableBody">
+                                    </tbody>
+                                </table>
+                            </div>
+                        </div>
+                    </div>
+
+                    <!-- RESUMEN DE TURNOS -->
+                    <div class="section-card" id="resumenTurnosCard" style="display: none;">
+                        <div class="card-header">
+                            <h2 class="card-title">
+                                <i class="fas fa-chart-line"></i>
+                                Resumen de Turnos y Ventas
+                            </h2>
+                        </div>
+                        <div class="card-body">
+                            <div class="table-responsive">
+                                <table class="table elegant-table">
+                                    <thead>
+                                        <tr>
+                                            <th>ID Turno</th>
+                                            <th>Usuario</th>
+                                            <th>Correo</th>
+                                            <th>Fecha Apertura</th>
+                                            <th>Fecha Cierre</th>
+                                            <th>Saldo Inicial</th>
+                                            <th>Saldo Final</th>
+                                            <th>Total Ventas</th>
+                                            <th>Estado</th>
+                                        </tr>
+                                    </thead>
+                                    <tbody id="tablaResumenTurnosBody"></tbody>
+                                </table>
+                            </div>
+                        </div>
+                    </div>
+
+                    <!-- VENTAS -->
+                    <div class="section-card">
+                        <div class="card-header">
+                            <h2 class="card-title">
+                                <i class="fas fa-list"></i>
+                                Últimas Ventas
+                            </h2>
+                        </div>
+                        <div class="card-body">
+                            <div class="search-section">
+                                <div class="search-form">
+                                    <div class="form-group">
+                                        <label for="buscarDNIIndex" class="form-label">
+                                            <i class="fas fa-search"></i>
+                                            Buscar Ventas
+                                        </label>
+                                        <input type="text" class="form-control" id="buscarDNIIndex" placeholder="Ingrese DNI del cliente">
+                                    </div>
+                                    <button class="btn btn-primary" type="button" onclick="filtrarVentasPorDNI()">
+                                        <i class="fas fa-search"></i>
+                                        Buscar
+                                    </button>
+                                </div>
+                            </div>
+                            
+                            <div class="table-responsive">
+                                <table class="table elegant-table">
+                                    <thead>
+                                        <tr>
+                                            <th>ID</th>
+                                            <th>Cliente</th>
+                                            <th>Email</th>
+                                            <th>Servicios</th>
+                                            <th>Total</th>
+                                            <th>Fecha</th>
+                                            <th>Acciones</th>
+                                        </tr>
+                                    </thead>
+                                    <tbody id="ventasTableBody">
+                                        <tr>
+                                            <td colspan="7" class="text-center py-5">
+                                                <div class="loading-spinner">
+                                                    <div class="spinner"></div>
+                                                    <div class="loading-text">Cargando ventas...</div>
+                                                </div>
+                                            </td>
+                                        </tr>
+                                    </tbody>
+                                </table>
+                            </div>
+                        </div>
+                    </div>
+                </section>
+            </main>
+        </div>
+    </div>
+
+    <!-- MODAL PARA DETALLES DE VENTA -->
+    <div class="modal fade" id="detalleVentaModal" tabindex="-1">
+        <div class="modal-dialog modal-lg">
+            <div class="modal-content">
+                <div class="modal-header">
+                    <h5 class="modal-title">
+                        <i class="fas fa-receipt"></i>
+                        Detalle de Venta
+                    </h5>
+                    <button type="button" class="btn-close" data-bs-dismiss="modal"></button>
+                </div>
+                <div class="modal-body" id="detalleVentaContent">
+                    <!-- Contenido del detalle se carga aquí -->
+                </div>
+                <div class="modal-footer">
+                    <button class="btn btn-primary" onclick="imprimirDetalleVenta()">
+                        <i class="fas fa-print"></i>
+                        Imprimir
+                    </button>
+                    <button type="button" class="btn btn-secondary" data-bs-dismiss="modal">
+                        <i class="fas fa-times"></i>
+                        Cerrar
+                    </button>
+                </div>
+            </div>
+        </div>
+    </div>
+
+    <!-- SCRIPTS -->
+    <script src="https://cdnjs.cloudflare.com/ajax/libs/bootstrap/5.3.2/js/bootstrap.bundle.min.js"></script>
+    <script src="js/admin.js"></script>
+    <script src="/js/index.js"></script>
+    <script>
+        // Función para toggle del sidebar
+        function toggleSidebar() {
+            document.querySelector('.admin-wrapper').classList.toggle('sidebar-collapsed');
+        }
+
+        // Marcar enlace activo
+        document.querySelectorAll('.menu-link').forEach(link => {
+            link.addEventListener('click', function() {
+                document.querySelectorAll('.menu-link').forEach(l => l.classList.remove('active'));
+                this.classList.add('active');
+            });
+        });
+    </script>
+</body>
+</html>

@@ -1,0 +1,140 @@
+body {
+    background: linear-gradient(135deg, #667eea 0%, #764ba2 100%);
+    min-height: 100vh;
+    font-family: 'Segoe UI', Tahoma, Geneva, Verdana, sans-serif;
+}
+
+.card {
+    border-radius: 15px;
+    box-shadow: 0 10px 30px rgba(0,0,0,0.2);
+    backdrop-filter: blur(10px);
+    background: rgba(255,255,255,0.95);
+    border: none;
+}
+
+.card-header {
+    background: linear-gradient(45deg, #667eea, #764ba2);
+    color: white;
+    border-radius: 15px 15px 0 0 !important;
+    border: none;
+}
+
+.btn-primary {
+    background: linear-gradient(45deg, #667eea, #764ba2);
+    border: none;
+    border-radius: 10px;
+    transition: all 0.3s ease;
+    padding: 12px 30px;
+    font-weight: 600;
+}
+
+.btn-primary:hover {
+    transform: translateY(-2px);
+    box-shadow: 0 5px 15px rgba(0,0,0,0.3);
+}
+
+.btn-primary:disabled {
+    background: linear-gradient(45deg, #ccc, #999);
+    transform: none;
+    cursor: not-allowed;
+}
+
+.btn-secondary {
+    border-radius: 10px;
+    transition: all 0.3s ease;
+    padding: 12px 30px;
+    font-weight: 600;
+}
+
+.btn-secondary:hover {
+    transform: translateY(-2px);
+}
+
+.form-control {
+    border-radius: 10px;
+    border: 2px solid #e0e6ed;
+    transition: all 0.3s ease;
+    padding: 12px 15px;
+}
+
+.form-control:focus {
+    border-color: #667eea;
+    box-shadow: 0 0 0 0.2rem rgba(102, 126, 234, 0.25);
+}
+
+.form-label {
+    font-weight: 600;
+    color: #495057;
+    margin-bottom: 8px;
+}
+
+.input-group-text {
+    border-radius: 10px 0 0 10px;
+    border: 2px solid #e0e6ed;
+    border-right: none;
+    background: linear-gradient(45deg, #f8f9fa, #e9ecef);
+    color: #667eea;
+    font-weight: 600;
+}
+
+.input-group .form-control {
+    border-left: none;
+    border-radius: 0 10px 10px 0;
+}
+
+.input-group:focus-within .input-group-text {
+    border-color: #667eea;
+}
+
+.required {
+    color: #dc3545;
+}
+
+.form-section {
+    background: rgba(248, 249, 250, 0.5);
+    border-radius: 10px;
+    padding: 20px;
+    margin-bottom: 25px;
+    border: 1px solid rgba(102, 126, 234, 0.1);
+}
+
+.section-title {
+    color: #667eea;
+    font-weight: 700;
+    margin-bottom: 20px;
+    border-bottom: 2px solid #667eea;
+    padding-bottom: 10px;
+}
+
+.animate-fade-in {
+    animation: fadeIn 0.6s ease-out;
+}
+
+@keyframes fadeIn {
+    from {
+        opacity: 0;
+        transform: translateY(20px);
+    }
+    to {
+        opacity: 1;
+        transform: translateY(0);
+    }
+}
+
+.success-message {
+    display: none;
+    background: linear-gradient(45deg, #28a745, #20c997);
+    color: white;
+    padding: 15px;
+    border-radius: 10px;
+    margin-bottom: 20px;
+}
+
+.loading-spinner {
+    display: none;
+}
+
+.spinner-border-sm {
+    width: 1rem;
+    height: 1rem;
+}

@@ -1,0 +1,146 @@
+<!DOCTYPE html>
+<html lang="es">
+<head>
+  <meta charset="UTF-8" />
+  <meta name="viewport" content="width=device-width, initial-scale=1.0"/>
+  <title>Registrar Nuevo Cliente</title>
+
+  <!-- Bootstrap y FontAwesome -->
+  <link href="https://cdnjs.cloudflare.com/ajax/libs/bootstrap/5.3.0/css/bootstrap.min.css" rel="stylesheet" />
+  <link href="https://cdnjs.cloudflare.com/ajax/libs/font-awesome/6.4.0/css/all.min.css" rel="stylesheet" />
+
+  <!-- Tu CSS personalizado -->
+  <link rel="stylesheet" href="/css/nuevo-cliente.css">
+</head>
+<body>
+  <div class="container py-5">
+    <div class="row justify-content-center">
+      <div class="col-lg-8 col-xl-7">
+        <div class="card animate-fade-in">
+          <div class="card-header text-center py-4">
+            <h2 class="mb-0">
+              <i class="fas fa-user-plus me-2"></i>
+              Registrar Nuevo Cliente
+            </h2>
+            <p class="mb-0 mt-2 opacity-75">Complete la información del cliente</p>
+          </div>
+
+          <div class="card-body p-4">
+            <div class="success-message" id="successMessage">
+              <i class="fas fa-check-circle me-2"></i>
+              Cliente registrado exitosamente en la base de datos
+            </div>
+
+            <form id="clienteForm">
+              <!-- Información Personal -->
+              <div class="form-section">
+                <h5 class="section-title">
+                  <i class="fas fa-user me-2"></i>
+                  Información Personal
+                </h5>
+
+                <div class="mb-3">
+                  <label for="nombre" class="form-label">
+                    Nombre Completo <span class="required">*</span>
+                  </label>
+                  <div class="input-group">
+                    <span class="input-group-text">
+                      <i class="fas fa-user"></i>
+                    </span>
+                    <input type="text" class="form-control" id="nombre" name="nombre" required placeholder="Ingrese el nombre completo">
+                  </div>
+                </div>
+              </div>
+
+                <div class="mb-3">
+                  <label for="dni" class="form-label">
+                    DNI <span class="required">*</span>
+                  </label>
+                    <div class="input-group">
+                      <span class="input-group-text">
+                        <i class="fas fa-id-card"></i>
+                      </span>
+                      <input type="text" class="form-control" id="dni" name="dni" required placeholder="Ingrese el número de DNI">
+                    </div>
+                </div>
+
+
+              <!-- Información de Contacto -->
+              <div class="form-section">
+                <h5 class="section-title">
+                  <i class="fas fa-address-book me-2"></i>
+                  Información de Contacto
+                </h5>
+
+                <div class="mb-3">
+                  <label for="email" class="form-label">
+                    Email <span class="required">*</span>
+                  </label>
+                  <div class="input-group">
+                    <span class="input-group-text">
+                      <i class="fas fa-envelope"></i>
+                    </span>
+                    <input type="email" class="form-control" id="email" name="email" required placeholder="ejemplo@correo.com">
+                  </div>
+                </div>
+
+                <div class="mb-3">
+                  <label for="telefono" class="form-label">
+                    Teléfono
+                  </label>
+                  <div class="input-group">
+                    <span class="input-group-text">
+                      <i class="fas fa-phone"></i>
+                    </span>
+                    <input type="tel" class="form-control" id="telefono" name="telefono" placeholder="Ej: +1234567890">
+                  </div>
+                </div>
+
+                <div class="mb-3">
+                  <label for="direccion" class="form-label">
+                    Dirección
+                  </label>
+                  <div class="input-group">
+                    <span class="input-group-text">
+                      <i class="fas fa-map-marker-alt"></i>
+                    </span>
+                    <textarea class="form-control" id="direccion" name="direccion" rows="2" placeholder="Ingrese la dirección completa"></textarea>
+                  </div>
+                </div>
+              </div>
+
+              <!-- Botones -->
+              <div class="d-flex justify-content-between pt-3">
+                <button type="button" class="btn btn-secondary" onclick="limpiarFormulario()">
+                  <i class="fas fa-broom me-2"></i>
+                  Limpiar
+                </button>
+
+                <div>
+                  <button type="button" class="btn btn-outline-secondary me-2" onclick="window.history.back()">
+                    <i class="fas fa-arrow-left me-2"></i>
+                    Volver
+                  </button>
+
+                  <button type="submit" class="btn btn-primary" id="submitBtn">
+                    <span class="loading-spinner">
+                      <span class="spinner-border spinner-border-sm me-2" role="status"></span>
+                    </span>
+                    <i class="fas fa-save me-2" id="saveIcon"></i>
+                    <span id="btnText">Guardar Cliente</span>
+                  </button>
+                </div>
+              </div>
+            </form>
+
+          </div>
+        </div>
+      </div>
+    </div>
+  </div>
+
+  <!-- Bootstrap JS -->
+  <script src="https://cdnjs.cloudflare.com/ajax/libs/bootstrap/5.3.0/js/bootstrap.bundle.min.js"></script>
+  <script src="/js/nuevo-cliente.js"></script>
+</body>
+</html>

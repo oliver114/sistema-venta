@@ -1,0 +1,405 @@
+<!DOCTYPE html>
+<html lang="es">
+<head>
+  <meta charset="UTF-8" />
+  <meta name="viewport" content="width=device-width, initial-scale=1.0"/>
+  <title>Sistema de Ventas</title>
+
+  <!-- Bootstrap y Font Awesome -->
+  <link href="https://cdnjs.cloudflare.com/ajax/libs/bootstrap/5.3.0/css/bootstrap.min.css" rel="stylesheet"/>
+  <link href="https://cdnjs.cloudflare.com/ajax/libs/font-awesome/6.4.0/css/all.min.css" rel="stylesheet"/>
+
+  <!-- Tu CSS personalizado -->
+  <link rel="stylesheet" href="/css/index.css">
+</head>
+<body>
+  <div class="container-fluid py-4">
+    <div class="row">
+        <div class="col-12">
+            <div class="card mb-4">
+                <div class="card-header">
+                    <h1 class="mb-0"><i class="fas fa-store"></i> Sistema de Ventas</h1>
+                </div>
+                <div class="card-body">
+                    <!-- Primera fila - 3 botones -->
+                    <div class="row g-3 mb-4">
+                        <div class="col-md-4">
+                            <a href="/nueva-venta" class="btn btn-primary btn-lg w-100">
+                                <i class="fas fa-plus"></i> Nueva Venta
+                            </a>
+                        </div>
+                        <div class="col-md-4">
+                            <a href="/nuevo-cliente" class="btn btn-outline-primary btn-lg w-100">
+                                <i class="fas fa-user-plus"></i> Nuevo Cliente
+                            </a>
+                        </div>
+                        <div class="col-md-4">
+                            <button class="btn btn-outline-info btn-lg w-100" onclick="cargarVentas()">
+                                <i class="fas fa-refresh"></i> Actualizar
+                            </button>
+                        </div>
+                    </div>
+                    
+                    <!-- Segunda fila - 3 botones -->
+                    <div class="row g-3 mb-4">
+                        <div class="col-md-4">
+                            <button class="btn btn-outline-success btn-lg w-100" onclick="mostrarReporteHoy()">
+                                <i class="fas fa-calendar-day"></i> Ver Ventas del Día
+                            </button>
+                        </div>
+                        <div class="col-md-4">
+                            <button class="btn btn-outline-warning btn-lg w-100" onclick="window.location.href='caja.html'">
+                                <i class="fas fa-cash-register"></i> Ir a Caja
+                            </button>
+                        </div>
+                        <div class="col-md-4">
+                            <!-- Aquí puedes agregar tu próximo botón -->
+                            <button class="btn btn-outline-secondary btn-lg w-100" onclick="">
+                                <i class="fas fa-cog"></i> Configuración
+                            </button>
+                        </div>
+                    </div>
+                </div>
+            </div>
+        </div>
+    </div>
+</div>
+
+  
+
+  <!-- <div id="reporteHoyUsuario" style="display:none;">
+    <h4><i class="fas fa-user-check"></i> Mis Ventas de Hoy</h4>
+    <table class="table table-striped">
+        <thead>
+            <tr>
+                <th>#</th>
+                <th>Fecha/Hora</th>
+                <th>Cliente</th>
+                <th>Servicios</th>
+                <th>Total</th>
+            </tr>
+        </thead>
+        <tbody id="tablaVentasHoyUsuario">
+        </tbody>
+    </table>
+</div> -->
+
+
+
+        
+    </div>
+<!-- Aquí se mostrará el reporte de las ventas hechas por el usuario -->
+<!-- Agrega esto en tu index.html donde quieras mostrar las ventas de hoy -->
+<!-- <div class="card">
+  <div class="card-header">
+    <h5><i class="fas fa-calendar-day"></i> Ventas de Hoy</h5>
+  </div>
+  <div class="card-body">
+    <div class="table-responsive">
+      <table class="table table-striped">
+        <thead>
+          <tr>
+            <th>#</th>
+            <th>Fecha/Hora</th>
+            <th>Cliente</th>
+            <th>Servicios</th>
+            <th>Total</th>
+          </tr>
+        </thead>
+        <tbody id="tablaVentasHoyUsuario">
+          <!-- Las filas se cargarán dinámicamente con JavaScript -->
+        </tbody>
+      </table>
+    </div>
+  </div>
+</div> -->
+
+
+<div id="seccionReporteHoy" class="mt-4" style="display: none;">
+  <h4 class="text-center"><i class="fas fa-calendar-check"></i> Ventas del Día</h4>
+  <div class="table-responsive">
+    <table class="table table-bordered table-striped mt-3">
+      <thead class="table-dark">
+        <tr>
+          <th># Venta</th>
+          <th>Cliente</th>
+          <th>Servicios</th>
+          <th>Total (S/)</th>
+          <th>Hora</th>
+        </tr>
+      </thead>
+      <tbody id="tablaReporteHoyBody">
+        <!-- Aquí se insertan las ventas -->
+      </tbody>
+    </table>
+  </div>
+</div>
+
+
+
+   
+
+    <!-- Modal para editar venta -->
+    <!-- Modal Editar Venta -->
+<div class="modal fade" id="editarVentaModal" tabindex="-1">
+  <div class="modal-dialog modal-lg">
+    <div class="modal-content">
+
+      <div class="modal-header">
+        <h5 class="modal-title"><i class="fas fa-edit"></i> Editar Venta</h5>
+        <button type="button" class="btn-close" data-bs-dismiss="modal"></button>
+      </div>
+
+      <!--  El form comienza aquí -->
+      <form id="editarVentaForm">
+        <div class="modal-body">
+          <input type="hidden" id="editVentaId" name="ventaId">
+          
+          <!-- Información del Cliente -->
+          <div class="row mb-3">
+            <div class="col-md-6">
+              <label for="editClienteNombre" class="form-label">
+                <i class="fas fa-user"></i> Nombre del Cliente
+              </label>
+              <input type="text" class="form-control" id="editClienteNombre" name="clienteNombre" required>
+            </div>
+            <div class="col-md-6">
+              <label for="editClienteEmail" class="form-label">
+                <i class="fas fa-envelope"></i> Email del Cliente
+              </label>
+              <input type="email" class="form-control" id="editClienteEmail" name="clienteEmail" required>
+            </div>
+          </div>
+
+          <div class="row mb-3">
+            <div class="col-md-6">
+              <label for="editClienteTelefono" class="form-label">
+                <i class="fas fa-phone"></i> Teléfono
+              </label>
+              <input type="tel" class="form-control" id="editClienteTelefono" name="clienteTelefono">
+            </div>
+            <div class="col-md-6">
+              <label for="editTotal" class="form-label">
+                <i class="fas fa-dollar-sign"></i> Total de la Venta
+              </label>
+              <!-- <input type="number" class="form-control" id="editTotal" name="total" step="0.01" min="0" required disabled> -->
+               <input type="text" class="form-control" id="editTotal" name="total" disabled>
+
+            </div>
+          </div>
+
+          <div class="mb-3">
+            <label for="editClienteDireccion" class="form-label">
+              <i class="fas fa-map-marker-alt"></i> Dirección
+            </label>
+            <textarea class="form-control" id="editClienteDireccion" name="clienteDireccion" rows="2"></textarea>
+          </div>
+
+          <div class="mb-3">
+            <label for="editServicios" class="form-label">
+              <i class="fas fa-list"></i> Servicios (separados por coma)
+            </label>
+            <textarea class="form-control" id="editServicios" name="servicios" rows="3"
+              placeholder="Ejemplo: Servicio 1, Servicio 2, Servicio 3"></textarea>
+            <div class="form-text">Ingrese los servicios separados por comas</div>
+          </div>
+        </div>
+
+        <!--  Botones dentro del formulario -->
+        <div class="modal-footer">
+          <button type="button" class="btn btn-secondary" data-bs-dismiss="modal">
+            <i class="fas fa-times"></i> Cancelar
+          </button>
+          <button type="submit" class="btn btn-primary" id="btnGuardarEdicion">
+            <span class="loading-spinner">
+              <span class="spinner-border spinner-border-sm me-2 d-none"></span>
+            </span>
+            <i class="fas fa-save"></i> Guardar Cambios
+          </button>
+        </div>
+      </form>
+      <!-- Aquí termina el formulario -->
+
+    </div>
+  </div>
+</div>
+
+    <!-- modal para reporte de hoy-->
+        <!-- Modal de Reporte de Hoy -->
+       <div class="modal fade" id="modalReporteHoy" tabindex="-1">
+  <div class="modal-dialog modal-xl">
+    <div class="modal-content">
+      <div class="modal-header bg-success text-white d-flex justify-content-between align-items-center w-100">
+        <h5 class="modal-title mb-0">
+          <i class="fas fa-calendar-day me-2"></i> Reporte 
+        </h5>
+        <!-- Fecha a la derecha en el header -->
+        
+        <button type="button" class="btn-close" data-bs-dismiss="modal"></button>
+      </div>
+
+      <!-- Cuerpo del modal -->
+      <div class="modal-body">
+
+        <!-- Información de la empresa: debajo del encabezado -->
+        <div class="empresa-info mb-3 text-center">
+          <h4 class="empresa-nombre mb-1">ECOSERVETAC</h4>
+          <p class="empresa-descripcion mb-1">Empresa de Balnearios Eco Turístico de Aguas Calientes</p>
+          <p class="empresa-servicios mb-0">Servicios: Piscinas Termales • Hospedaje • Restaurante • Tours Ecológicos</p>
+        </div>
+
+        <!-- Aquí se insertan dinámicamente los datos -->
+        <div id="contenidoReporteHoy">
+          <p class="text-muted">Cargando datos...</p>
+        </div>
+
+      </div>
+    </div>
+  </div>
+</div>
+
+
+    <!-- fin de modal repote -->
+  <!-- Scripts -->
+  <script src="https://cdn.jsdelivr.net/npm/bootstrap@5.3.0/dist/js/bootstrap.bundle.min.js"></script>
+  
+  <script src="https://cdnjs.cloudflare.com/ajax/libs/html2pdf.js/0.10.1/html2pdf.bundle.min.js"></script>
+<script>
+function imprimirDetalleVenta() {
+    const contenido = document.getElementById("detalleVentaContent");
+
+    // Usamos setTimeout para asegurarnos de que todo el DOM dentro del modal esté completamente renderizado
+    setTimeout(() => {
+        const opciones = {
+            margin:       0.5,
+            filename:     'detalle_venta.pdf',
+            image:        { type: 'jpeg', quality: 0.98 },
+            html2canvas:  { scale: 2, useCORS: true },
+            jsPDF:        { unit: 'in', format: 'letter', orientation: 'portrait' }
+        };
+
+        html2pdf().set(opciones).from(contenido).save();
+    }, 500); // Espera 500ms — puedes ajustar si el contenido es más pesado
+}
+</script>
+<script>
+async function generarReporteHoy() {
+    const modalBody = document.getElementById('contenidoReporteHoy');
+    modalBody.innerHTML = '<p class="text-muted">Cargando datos...</p>';
+
+    const modal = new bootstrap.Modal(document.getElementById('modalReporteHoy'));
+    modal.show();
+
+    try {
+        const response = await fetch('/api/reportes/hoy');
+        const datos = await response.json();
+
+        if (!datos || datos.length === 0) {
+            modalBody.innerHTML = `
+                <div class="alert alert-warning">
+                    <i class="fas fa-info-circle me-1"></i> No se encontraron ventas para hoy.
+                </div>
+            `;
+            return;
+        }
+
+        let tabla = `
+            <table class="table table-bordered table-striped mt-3">
+                <thead class="table-dark">
+                    <tr>
+                        <th># Venta</th>
+                        <th>Cliente</th>
+                        <th>Servicios</th>
+                        <th>Total (S/)</th>
+                        <th>Hora</th>
+                    </tr>
+                </thead>
+                <tbody>
+        `;
+
+        datos.forEach(venta => {
+            tabla += `
+                <tr>
+                    <td>${venta.id}</td>
+                    <td>${venta.cliente_nombre}</td>
+                    <td>${venta.servicios}</td>
+                    <td>${parseFloat(venta.total).toFixed(2)}</td>
+                    <td>${new Date(venta.fecha_venta).toLocaleTimeString()}</td>
+                </tr>
+            `;
+        });
+
+        tabla += '</tbody></table>';
+        modalBody.innerHTML = `
+            <p><strong>Ventas del día ${new Date().toLocaleDateString()}</strong></p>
+            ${tabla}
+        `;
+
+    } catch (error) {
+        console.error('Error al generar reporte:', error);
+        modalBody.innerHTML = `
+            <div class="alert alert-danger">Error al generar el reporte</div>
+        `;
+    }
+}
+
+document.addEventListener('DOMContentLoaded', () => {
+    const token = localStorage.getItem('token');
+    if (!token) {
+        window.location.href = '/login';
+    }
+});
+
+
+</script>
+<script src="js/index.js"></script>
+<script>
+  async function mostrarReporteHoy() {
+    const contenedor = document.getElementById('seccionReporteHoy');
+    const cuerpoTabla = document.getElementById('tablaReporteHoyBody');
+    
+    contenedor.style.display = 'block';
+
+    try {
+      const token = localStorage.getItem('token');
+      const response = await fetch('/api/reportes/ventas/hoy', {
+        headers: {
+          'Authorization': `Bearer ${token}`
+        }
+      });
+
+      const ventas = await response.json();
+
+      if (!ventas || ventas.length === 0) {
+        cuerpoTabla.innerHTML = `<tr><td colspan="5" class="text-center text-muted">No se encontraron ventas para hoy.</td></tr>`;
+        return;
+      }
+
+      let filas = '';
+      ventas.forEach(venta => {
+        filas += `
+          <tr>
+            <td>${venta.id}</td>
+            <td>${venta.cliente_nombre}</td>
+            <td>${venta.servicios}</td>
+            <td>${parseFloat(venta.total).toFixed(2)}</td>
+            <td>${new Date(venta.fecha_venta).toLocaleTimeString()}</td>
+          </tr>
+        `;
+      });
+
+      cuerpoTabla.innerHTML = filas;
+
+    } catch (error) {
+      console.error('Error al cargar ventas del día:', error);
+      cuerpoTabla.innerHTML = `<tr><td colspan="5" class="text-center text-danger">Error al cargar ventas del día</td></tr>`;
+    }
+  }
+</script>
+
+
+
+
+
+</body>
+</html>

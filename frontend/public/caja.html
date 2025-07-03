@@ -1,0 +1,154 @@
+<!DOCTYPE html>
+<html lang="es">
+<head>
+    <meta charset="UTF-8">
+    <meta name="viewport" content="width=device-width, initial-scale=1.0">
+    <title>Gestión de Caja - Sistema de Ventas</title>
+    <link rel="stylesheet" href="css/caja.css">
+    <link rel="preconnect" href="https://fonts.googleapis.com">
+    <link rel="preconnect" href="https://fonts.gstatic.com" crossorigin>
+</head>
+<body>
+    <div class="container">
+        <header class="header">
+            <h1>💰 Gestión de Caja</h1>
+            <div class="user-info">
+                <span id="userName">Usuario Conectado</span>
+                <button id="logoutBtn" class="logout-btn">Cerrar Sesión</button>
+            </div>
+        </header>
+
+        <nav class="navbar">
+            <button id="ventaBtn" class="nav-btn">🛒 Realizar Venta</button>
+            <button id="movimientoBtn" class="nav-btn">📊 Movimientos</button>
+            <button id="estadoBtn" class="nav-btn active">💳 Estado Caja</button>
+        </nav>
+
+        <!-- Panel de Estado de Caja -->
+        <div id="estadoPanel" class="panel active">
+            <div class="panel-header">
+                <h2>💳 Estado de Caja</h2>
+            </div>
+            
+            <div id="cajaAbierta" class="caja-status" style="display: none;">
+                <div class="status-card">
+                    <h3>✅ Caja Abierta</h3>
+                    <div class="status-info">
+                        <p><strong>🕒 Hora Apertura:</strong> <span id="horaApertura"></span></p>
+                        <p><strong>💵 Saldo Inicial:</strong> S/. <span id="saldoInicial"></span></p>
+                        <p><strong>📈 Total Ventas:</strong> S/. <span id="totalVentas">0.00</span></p>
+                        <p><strong>💰 Saldo Actual:</strong> S/. <span id="saldoActual"></span></p>
+                    </div>
+                    <div style="text-align: center;">
+                        <button id="cerrarCajaBtn" class="btn btn-danger">🔒 Cerrar Caja</button>
+                    </div>
+                </div>
+            </div>
+
+            <div id="cajaCerrada" class="caja-status" style="display: block;">
+                <div class="status-card">
+                    <h3>❌ Caja Cerrada</h3>
+                    <p style="text-align: center; margin-bottom: 2rem; font-size: 1.1rem; color: #64748b;">
+                        No tienes una caja abierta. Para comenzar a trabajar, abre la caja.
+                    </p>
+                    <div style="text-align: center;">
+                        <button id="abrirCajaBtn" class="btn btn-success">🔓 Abrir Caja</button>
+                    </div>
+                </div>
+            </div>
+        </div>
+
+        <!-- Panel de Venta -->
+        <div id="ventaPanel" class="panel">
+            <div class="panel-header">
+                <h2>🛒 Realizar Venta</h2>
+            </div>
+            <div id="ventaContent">
+                <div class="status-card">
+                    <h3>⚠️ Caja Cerrada</h3>
+                    <p style="text-align: center; font-size: 1.1rem; color: #64748b;">
+                        Para realizar ventas, primero debes abrir la caja.
+                    </p>
+                    <div style="text-align: center; margin-top: 2rem;">
+                        <button onclick="document.getElementById('estadoBtn').click(); document.getElementById('abrirCajaBtn').click();" class="btn btn-primary">
+                            🔓 Abrir Caja Ahora
+                        </button>
+                    </div>
+                </div>
+            </div>
+        </div>
+
+        <!-- Panel de Movimientos -->
+        <div id="movimientoPanel" class="panel">
+            <div class="panel-header">
+                <h2>📊 Movimientos de Caja</h2>
+            </div>
+            <form id="movimientoForm" class="form">
+                <div class="form-group">
+                    <label for="tipoMovimiento">💼 Tipo de Movimiento:</label>
+                    <select id="tipoMovimiento" required>
+                        <option value="">Seleccionar tipo...</option>
+                        <option value="ingreso">📈 Ingreso</option>
+                        <option value="egreso">📉 Egreso</option>
+                    </select>
+                </div>
+                <div class="form-group">
+                    <label for="montoMovimiento">💰 Monto:</label>
+                    <input type="number" id="montoMovimiento" step="0.01" min="0" placeholder="0.00" required>
+                </div>
+                <div class="form-group">
+                    <label for="descripcionMovimiento">📝 Descripción:</label>
+                    <input type="text" id="descripcionMovimiento" placeholder="Describe el motivo del movimiento..." required>
+                </div>
+                <div style="text-align: center;">
+                    <button type="submit" class="btn btn-primary">✅ Registrar Movimiento</button>
+                </div>
+            </form>
+        </div>
+    </div>
+
+    <!-- Modal Abrir Caja -->
+    <div id="modalAbrirCaja" class="modal">
+        <div class="modal-content">
+            <h3>🔓 Abrir Caja</h3>
+            <form id="abrirCajaForm">
+                <div class="form-group">
+                    <label for="saldoInicialInput">💵 Saldo Inicial:</label>
+                    <input type="number" id="saldoInicialInput" step="0.01" min="0" value="0.00" placeholder="0.00" required>
+                </div>
+                <div class="form-group">
+                    <label for="observacionesAbrir">📝 Observaciones:</label>
+                    <textarea id="observacionesAbrir" rows="3" placeholder="Observaciones adicionales (opcional)..."></textarea>
+                </div>
+                <div class="modal-buttons">
+                    <button type="button" id="cancelarAbrirBtn" class="btn btn-secondary">❌ Cancelar</button>
+                    <button type="submit" class="btn btn-success">✅ Abrir Caja</button>
+                </div>
+            </form>
+        </div>
+    </div>
+
+    <!-- Modal Cerrar Caja -->
+    <div id="modalCerrarCaja" class="modal">
+        <div class="modal-content">
+            <h3>🔒 Cerrar Caja</h3>
+            <form id="cerrarCajaForm">
+                <div class="form-group">
+                    <label for="saldoFinalInput">💰 Saldo Final (efectivo en caja):</label>
+                    <input type="number" id="saldoFinalInput" step="0.01" min="0" placeholder="0.00" required>
+                </div>
+                <div class="form-group">
+                    <label for="observacionesCerrar">📝 Observaciones:</label>
+                    <textarea id="observacionesCerrar" rows="3" placeholder="Observaciones del cierre (opcional)..."></textarea>
+                </div>
+                <div class="modal-buttons">
+                    <button type="button" id="cancelarCerrarBtn" class="btn btn-secondary">❌ Cancelar</button>
+                    <button type="submit" class="btn btn-danger">🔒 Cerrar Caja</button>
+                </div>
+            </form>
+        </div>
+    </div>
+
+    <script src="js/caja.js"></script>
+</body>
+</html>

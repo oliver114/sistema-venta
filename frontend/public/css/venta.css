@@ -1,0 +1,236 @@
+body {
+    background: linear-gradient(135deg, #667eea 0%, #764ba2 100%);
+    min-height: 100vh;
+}
+
+.card {
+    border-radius: 15px;
+    box-shadow: 0 10px 30px rgba(0,0,0,0.2);
+    backdrop-filter: blur(10px);
+    background: rgba(255,255,255,0.95);
+}
+
+.card-header {
+    background: linear-gradient(45deg, #667eea, #764ba2);
+    color: white;
+    border-radius: 15px 15px 0 0 !important;
+}
+
+.btn-primary {
+    background: linear-gradient(45deg, #667eea, #764ba2);
+    border: none;
+    border-radius: 10px;
+    transition: all 0.3s ease;
+}
+
+.btn-primary:hover {
+    transform: translateY(-2px);
+    box-shadow: 0 5px 15px rgba(0,0,0,0.3);
+}
+
+.form-control, .form-select {
+    border-radius: 10px;
+    border: 2px solid #e0e6ed;
+    transition: all 0.3s ease;
+}
+
+.form-control:focus, .form-select:focus {
+    border-color: #667eea;
+    box-shadow: 0 0 0 0.2rem rgba(102, 126, 234, 0.25);
+}
+
+.service-item {
+    border: 2px solid #e0e6ed;
+    border-radius: 10px;
+    transition: all 0.3s ease;
+    background: white;
+}
+
+.service-item:hover {
+    border-color: #667eea;
+    transform: translateY(-2px);
+    box-shadow: 0 5px 15px rgba(0,0,0,0.1);
+}
+
+.service-item.selected {
+    border-color: #667eea;
+    background: linear-gradient(45deg, rgba(102, 126, 234, 0.1), rgba(118, 75, 162, 0.1));
+}
+
+.total-display {
+    background: linear-gradient(45deg, #28a745, #20c997);
+    color: white;
+    border-radius: 15px;
+    padding: 20px;
+    text-align: center;
+}
+
+.client-info {
+    background: linear-gradient(45deg, rgba(102, 126, 234, 0.1), rgba(118, 75, 162, 0.1));
+    border-radius: 10px;
+    padding: 15px;
+    margin-bottom: 20px;
+}
+  /* seccion   venta procesada */
+  
+        .empresa-info {
+            text-align: center;
+            flex: 1;
+        }
+        
+        .empresa-nombre {
+            color: #2c5aa0;
+            font-weight: bold;
+            margin-bottom: 5px;
+        }
+        
+        .empresa-descripcion {
+            font-size: 0.9rem;
+            color: #666;
+            margin-bottom: 3px;
+        }
+        
+        .empresa-servicios {
+            font-size: 0.8rem;
+            color: #888;
+            margin-bottom: 0;
+        }
+        
+        .boleta-container {
+            background: white;
+            padding: 20px;
+            border-radius: 8px;
+        }
+        
+        .boleta-header {
+            display: flex;
+            justify-content: space-between;
+            margin-bottom: 15px;
+            font-size: 0.9rem;
+        }
+        
+        .ruc-info, .fecha-info {
+            display: flex;
+            align-items: center;
+            gap: 8px;
+        }
+        
+        .ruc-label, .fecha-label {
+            font-weight: bold;
+            color: #2c5aa0;
+        }
+        
+        .separador-boleta {
+            border-bottom: 2px dashed #ccc;
+            margin: 15px 0;
+        }
+        
+        .agradecimiento {
+            text-align: center;
+            margin-top: 20px;
+        }
+        
+        .mensaje-gracias {
+            font-weight: bold;
+            color: #2c5aa0;
+            font-size: 1.1rem;
+            margin-bottom: 5px;
+        }
+        
+        .mensaje-visita {
+            color: #666;
+            font-size: 0.9rem;
+            margin-bottom: 0;
+        }
+        
+        .detalles-venta h5 {
+            color: #2c5aa0;
+            border-bottom: 2px solid #2c5aa0;
+            padding-bottom: 10px;
+            margin-bottom: 15px;
+        }
+        
+        .detalles-venta p {
+            margin-bottom: 8px;
+        }
+        
+        .detalles-venta ul {
+            background-color: #f8f9fa;
+            padding: 15px;
+            border-radius: 5px;
+            border-left: 4px solid #2c5aa0;
+        }
+        
+        .detalles-venta ul li {
+            margin-bottom: 5px;
+        }
+        
+        /* Estilos para impresión/PDF */
+        @media print {
+            .modal-header, .modal-footer {
+                display: none !important;
+            }
+            
+            .boleta-container {
+                box-shadow: none !important;
+                border: none !important;
+            }
+        }
+        
+        /* Botón de descarga con animación */
+        .btn-download {
+            position: relative;
+            overflow: hidden;
+        }
+        
+        .btn-download:hover {
+            transform: translateY(-2px);
+            box-shadow: 0 4px 8px rgba(0,0,0,0.2);
+        }
+        
+        .btn-download.downloading {
+            pointer-events: none;
+        }
+        
+        .btn-download.downloading::after {
+            content: '';
+            position: absolute;
+            top: 0;
+            left: -100%;
+            width: 100%;
+            height: 100%;
+            background: linear-gradient(90deg, transparent, rgba(255,255,255,0.3), transparent);
+            animation: loading 1.5s infinite;
+        }
+        
+        @keyframes loading {
+            0% { left: -100%; }
+            100% { left: 100%; }
+        }
+
+         /* Estilos para impresión/PDF */
+         .boleta-header {
+    display: flex;
+    justify-content: space-between;
+    align-items: flex-start;
+    flex-wrap: wrap;
+    margin-bottom: 20px;
+    border-bottom: 2px solid #ccc;
+    padding-bottom: 10px;
+}
+
+.empresa-info {
+    max-width: 65%;
+}
+
+.fecha-ruc {
+    min-width: 30%;
+    text-align: right;
+}
+
+.fecha-info,
+.ruc-info {
+    font-size: 0.95rem;
+}
+
+           /* Estilos para impresión/PDF */
