@@ -31,31 +31,26 @@ app.use('/api/auth', authRoutes);
 app.use('/api/clientes', verifyToken, clientesRoutes);
 app.use('/api/servicios', verifyToken, serviciosRoutes);
 app.use('/api/ventas', verifyToken, ventasRoutes);
-app.use('/api/reportes', verifyToken, reportesRoutes);
+app.use('/api/reportes', verifyToken, reportesRoutes); // ✅ Esta es la buena
 app.use('/api/caja', verifyToken, cajaRoutes);
 app.use('/api/admin', verifyToken, adminRoutes);
-app.use('/api/reportes', require('./routes/reportes'));
 
+// ⚠️ Elimino esta línea duplicada:
+// app.use('/api/reportes', require('./routes/reportes'));
 
-// Middleware para verificar autenticación en rutas protegidas
+// Middleware para verificar autenticación (no se aplica globalmente por ahora)
 const checkAuth = (req, res, next) => {
-    // Si es la ruta de login, permitir acceso
-    if (req.path === '/login') {
-        return next();
-    }
-    
-    // Para otras rutas, verificar si hay token
-    const token = req.headers.authorization?.split(' ')[1] || 
-                  req.query.token || 
+    if (req.path === '/login') return next();
+
+    const token = req.headers.authorization?.split(' ')[1] ||
+                  req.query.token ||
                   req.cookies?.token;
-    
-    if (!token) {
-        return res.redirect('/login');
-    }
-    
+
+    if (!token) return res.redirect('/login');
+
     try {
         const jwt = require('jsonwebtoken');
-        const JWT_SECRET = 'tu_clave_secreta_aqui'; // Debe ser la misma que en auth.js
+        const JWT_SECRET = process.env.JWT_SECRET || 'tu_clave_secreta_aqui'; // ✅ usa env
         const decoded = jwt.verify(token, JWT_SECRET);
         req.user = decoded;
         next();
@@ -64,20 +59,15 @@ const checkAuth = (req, res, next) => {
     }
 };
 
-// Rutas HTML
-
-
-// Ruta de login (sin protección)
+// Rutas HTML públicas y protegidas
 app.get('/login', (req, res) => {
     res.sendFile(path.join(__dirname, '../frontend/public/login.html'));
 });
 
-// Ruta principal (página de inicio después del login)
 app.get('/', (req, res) => {
     res.sendFile(path.join(__dirname, '../frontend/public/index.html'));
 });
 
-// Ruta alternativa para index.html (por si acaso)
 app.get('/index', (req, res) => {
     res.sendFile(path.join(__dirname, '../frontend/public/index.html'));
 });
@@ -86,7 +76,6 @@ app.get('/index.html', (req, res) => {
     res.sendFile(path.join(__dirname, '../frontend/public/index.html'));
 });
 
-// Rutas protegidas
 app.get('/caja', (req, res) => {
     res.sendFile(path.join(__dirname, '../frontend/public/caja.html'));
 });
@@ -107,7 +96,7 @@ app.get('/admin', (req, res) => {
     res.sendFile(path.join(__dirname, '../frontend/public/admin.html'));
 });
 
-// Ruta catch-all - debe ir al final
+// Ruta catch-all
 app.get('*', (req, res) => {
     res.redirect('/login');
 });
