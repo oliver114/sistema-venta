@@ -1,14 +1,13 @@
 // 
 // backend/db.js
-const mariadb = require('mariadb');
+const mysql = require('mysql2/promise');
 
-const pool = mariadb.createPool({
-  host: process.env.DB_HOST,
-  user: process.env.DB_USER,
-  password: process.env.DB_PASSWORD,
-  database: process.env.DB_NAME,
-  port: process.env.DB_PORT || 3306,
-  connectionLimit: 5
+const pool = mysql.createPool({
+  uri: process.env.DATABASE_URL,
+  connectionLimit: 5,
+  acquireTimeout: 60000,
+  timeout: 60000,
+  reconnect: true
 });
 
 async function getConnection() {
@@ -16,6 +15,7 @@ async function getConnection() {
     const conn = await pool.getConnection();
     return conn;
   } catch (error) {
+    console.error('Error conectando a la base de datos:', error);
     throw error;
   }
 }
