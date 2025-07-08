@@ -20,6 +20,14 @@ app.use(bodyParser.json());
 app.use(bodyParser.urlencoded({ extended: true }));
 
 // Archivos estáticos
+// app.use(express.static(path.join(__dirname, '../frontend/public')));
+// app.use('/css', express.static(path.join(__dirname, '../frontend/public/css')));
+// app.use('/js', express.static(path.join(__dirname, '../frontend/public/js')));
+// app.use('/images', express.static(path.join(__dirname, '../frontend/public/images')));
+// app.use('/assets', express.static(path.join(__dirname, '../frontend/public/assets')));
+
+// En tu index.js, cambia esta sección:
+// Archivos estáticos - ajustado para estructura backend/frontend
 app.use(express.static(path.join(__dirname, '../frontend/public')));
 app.use('/css', express.static(path.join(__dirname, '../frontend/public/css')));
 app.use('/js', express.static(path.join(__dirname, '../frontend/public/js')));
