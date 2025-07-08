@@ -22,4 +22,5 @@ const pool = mariadb.createPool({
   timeout: 60000
 });
 
-// resto del código...
+// Exporta directamente la función
+module.exports = pool.getConnection.bind(pool);
