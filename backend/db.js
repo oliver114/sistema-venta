@@ -23,4 +23,4 @@ const pool = mariadb.createPool({
 });
 
 // Exporta directamente la función
-module.exports = { getConnection: pool.getConnection.bind(pool) };
+module.exports = { getConnection: pool.getConnection.bind(pool) };2
